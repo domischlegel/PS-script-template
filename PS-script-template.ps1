@@ -32,7 +32,6 @@ Param (
 #Set Error Action to Silently Continue
 $ErrorActionPreference = 'SilentlyContinue'
 
-
 # Get Script execute directory and script name
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 $ScriptName = $MyInvocation.MyCommand.Name
@@ -73,6 +72,7 @@ Function <FunctionName> {
   }
 }
 #>
+
 function Write-Log {
     param (
         [Parameter(Mandatory=$False, Position=0)]
@@ -85,8 +85,9 @@ function Write-Log {
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 
 Write-Log -Entry "Script $ScriptName started on $(Get-Date -Format 'dddd, MMMM dd, yyyy')."
-#Script Execution goes here
 
+
+#Script Execution goes here
 
 
 Write-Log -Entry "Script $ScriptName ended ($ExitCode)."

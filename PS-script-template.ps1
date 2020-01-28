@@ -32,8 +32,6 @@ Param (
 #Set Error Action to Silently Continue
 $ErrorActionPreference = 'SilentlyContinue'
 
-#Import Modules & Snap-ins
-Import-Module PSLogging
 
 # Get Script execute directory
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
@@ -42,11 +40,11 @@ $ScriptName = Split-Path $script:MyInvocation.MyCommand.Name
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
 
 #Script Version
-$sScriptVersion = '1.0'
+$ScriptVersion = '1.0'
 
 #Log File Info
-$sLogName = '$ScriptName.log'
-$sLogFile = Join-Path -Path $ScriptDir -ChildPath $sLogName
+$LogName = '$ScriptName.log'
+$LogFile = Join-Path -Path $ScriptDir -ChildPath $LogName
 
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
 
@@ -54,31 +52,38 @@ $sLogFile = Join-Path -Path $ScriptDir -ChildPath $sLogName
 Function <FunctionName> {
   Param ()
   Begin {
-    Write-LogInfo -LogPath $sLogFile -Message '<description of what is going on>...'
+    Write-Log -Entry '<description of what is going on>...'
   }
   Process {
     Try {
       <code goes here>
     }
     Catch {
-      Write-LogError -LogPath $sLogFile -Message $_.Exception -ExitGracefully
+      Write-Log -Entry $_.Exception
       Break
     }
   }
   End {
     If ($?) {
-      Write-LogInfo -LogPath $sLogFile -Message 'Completed Successfully.'
-      Write-LogInfo -LogPath $sLogFile -Message ' '
+      Write-Log -Entry 'Completed Successfully.'
     }
   }
 }
 #>
+function Write-Log {
+    param (
+        [Parameter(Mandatory=$False, Position=0)]
+        [String]$Entry
+    )
+
+    "$(Get-Date -Format 'dd-MM-yyyy HH:mm:ss.fff') $Entry" | Out-File -FilePath $LogFile -Append
+}
 
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 
-Start-Log -LogPath $ScriptDir -LogName $sLogName -ScriptVersion $sScriptVersion
+Write-Log -Entry 'Script MyScript started on $(Get-Date -Format 'dddd, MMMM dd, yyyy').'
 #Script Execution goes here
 
 
 
-Stop-Log -LogPath $sLogFile
+Write-Log -Entry 'Script MyScript ended ($ExitCode).'

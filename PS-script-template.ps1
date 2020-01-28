@@ -35,7 +35,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 
 # Get Script execute directory
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
-$ScriptName = Split-Path $script:MyInvocation.MyCommand.Name
+$ScriptName = $MyInvocation.MyCommand.Name
 
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
 
@@ -43,8 +43,9 @@ $ScriptName = Split-Path $script:MyInvocation.MyCommand.Name
 $ScriptVersion = '1.0'
 
 #Log File Info
-$LogName = '$ScriptName.log'
+$LogName = "$ScriptName.log"
 $LogFile = Join-Path -Path $ScriptDir -ChildPath $LogName
+$ExitCode = 0
 
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
 
@@ -52,7 +53,7 @@ $LogFile = Join-Path -Path $ScriptDir -ChildPath $LogName
 Function <FunctionName> {
   Param ()
   Begin {
-    Write-Log -Entry '<description of what is going on>...'
+    Write-Log -Entry "<description of what is going on>..."
   }
   Process {
     Try {
@@ -65,7 +66,7 @@ Function <FunctionName> {
   }
   End {
     If ($?) {
-      Write-Log -Entry 'Completed Successfully.'
+      Write-Log -Entry "Completed Successfully."
     }
   }
 }
@@ -81,9 +82,9 @@ function Write-Log {
 
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 
-Write-Log -Entry 'Script MyScript started on $(Get-Date -Format 'dddd, MMMM dd, yyyy').'
+Write-Log -Entry "Script $ScriptName started on $(Get-Date -Format 'dddd, MMMM dd, yyyy')."
 #Script Execution goes here
 
 
 
-Write-Log -Entry 'Script MyScript ended ($ExitCode).'
+Write-Log -Entry "Script $ScriptName ended ($ExitCode)."

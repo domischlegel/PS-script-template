@@ -33,18 +33,20 @@ Param (
 $ErrorActionPreference = 'SilentlyContinue'
 
 
-# Get Script execute directory
+# Get Script execute directory and script name
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path
 $ScriptName = $MyInvocation.MyCommand.Name
+
+#Log File Info
+$LogName = "$ScriptName.log"
+$LogFile = Join-Path -Path $ScriptDir -ChildPath $LogName
 
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
 
 #Script Version
 $ScriptVersion = '1.0'
 
-#Log File Info
-$LogName = "$ScriptName.log"
-$LogFile = Join-Path -Path $ScriptDir -ChildPath $LogName
+#Set exitcode on successful run
 $ExitCode = 0
 
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
